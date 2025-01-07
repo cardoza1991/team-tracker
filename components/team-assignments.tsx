@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Check } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Plus } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -36,9 +36,11 @@ const TeamAssignments = ({ teamId }) => {
       fetchAssignments();
       fetchAvailableLocations();
     }
-  }, [teamId]);
+  }, [teamId, fetchAssignments]);
+  
 
-  const fetchAssignments = async () => {
+  
+  const fetchAssignments = useCallback(async () => {
     try {
       const response = await fetch(`http://localhost:8080/api/teams/${teamId}/assignments`);
       if (response.ok) {
@@ -50,7 +52,7 @@ const TeamAssignments = ({ teamId }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [teamId]);
 
   const fetchAvailableLocations = async () => {
     try {

@@ -4,6 +4,7 @@ import { MapPin, Users, CheckCircle, Search, Plus } from 'lucide-react';
 import TeamManagement from '@/components/team-management';
 import TeamAssignments from '@/components/team-assignments';
 import VisitHistory from '@/components/visit-history';
+import { Team, Location, Stats } from '@/types';
 import {
   Dialog,
   DialogContent,
@@ -28,13 +29,13 @@ import {
 } from "@/components/ui/card";
 
 const Dashboard = () => {
-  const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState(null);
-  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [notes, setNotes] = useState('');
   const [showCheckInForm, setShowCheckInForm] = useState(false);
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<Stats>({
     totalLocations: 213,
     preachedLocations: 0,
     activeTeams: 0,
@@ -46,10 +47,7 @@ const Dashboard = () => {
       const response = await fetch('http://localhost:8080/api/locations');
       if (response.ok) {
         const data = await response.json();
-        console.log('Fetched locations:', data);
         setLocations(data);
-      } else {
-        console.error('Failed to fetch locations');
       }
     } catch (error) {
       console.error('Error fetching locations:', error);
@@ -65,8 +63,6 @@ const Dashboard = () => {
           ...prev,
           totalLocations: data.total_locations,
           preachedLocations: data.preached_locations,
-          activeTeams: prev.activeTeams,
-          teams: prev.teams
         }));
       }
     } catch (error) {
@@ -108,7 +104,6 @@ const Dashboard = () => {
         setSelectedLocation(null);
         setSelectedTeam(null);
         
-        // Fetch updated data
         await Promise.all([
           fetchStatistics(),
           fetchLocations()
@@ -119,7 +114,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleTeamsChange = (teams) => {
+  const handleTeamsChange = (teams: Team[]) => {
     setStats(prev => ({
       ...prev,
       activeTeams: teams?.length || 0,

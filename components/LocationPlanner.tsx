@@ -1,11 +1,5 @@
+// Remove unused imports
 import React, { useState, useEffect } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -15,6 +9,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+
+// Rest of the component stays the same
 
 const LocationPlanner = ({ teamId, onPlanComplete }) => {
   const [availableLocations, setAvailableLocations] = useState([]);
